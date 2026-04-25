@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Computer School — Learn & Grow</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark: #0d0d14;
+  --dark2: #13131f;
+  --dark3: #1a1a2e;
+  --accent: #4fc3f7;
+  --accent2: #00e5a0;
+  --text: #f0f0f8;
+  --muted: rgba(240,240,248,0.55);
+  --border: rgba(255,255,255,0.08);
+  --card: rgba(255,255,255,0.04);
+  --card-hover: rgba(255,255,255,0.07);
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--dark); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 40px;
+  background: rgba(13,13,20,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-family: var(--font-head); font-size: 20px; font-weight: 700; color: var(--text); text-decoration: none; }
+.logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 10px; align-items: center; }
+.btn { font-family: var(--font-body); cursor: pointer; border: none; transition: all 0.2s; font-size: 14px; }
+.btn-ghost { background: transparent; color: var(--muted); padding: 9px 20px; border-radius: 8px; border: 1px solid var(--border); }
+.btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+.btn-accent { background: var(--accent); color: var(--dark); padding: 9px 22px; border-radius: 8px; font-weight: 500; }
+.btn-accent:hover { background: #29b6f6; transform: translateY(-1px); }
+.btn-green { background: var(--accent2); color: var(--dark); padding: 9px 22px; border-radius: 8px; font-weight: 500; }
+.btn-green:hover { background: #00c98d; transform: translateY(-1px); }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 120px 24px 80px;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,195,247,0.12) 0%, transparent 70%),
+              radial-gradient(ellipse 50% 40% at 80% 80%, rgba(0,229,160,0.07) 0%, transparent 60%),
+              var(--dark);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(79,195,247,0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 0%, transparent 100%);
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.25);
+  color: var(--accent); font-size: 13px; padding: 6px 16px; border-radius: 100px;
+  margin-bottom: 28px; font-weight: 500;
+}
+.hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.hero h1 {
+  font-family: var(--font-head); font-size: clamp(36px, 7vw, 72px);
+  font-weight: 700; line-height: 1.1; margin-bottom: 20px;
+  max-width: 800px;
+}
+.hero h1 .line2 { color: var(--accent); display: block; }
+.hero p { font-size: 17px; color: var(--muted); max-width: 520px; line-height: 1.7; margin-bottom: 40px; }
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 60px; }
+.hero-btns .btn { font-size: 15px; padding: 14px 32px; border-radius: 10px; }
+.hero-stats { display: flex; gap: 40px; flex-wrap: wrap; justify-content: center; }
+.hero-stat { text-align: center; }
+.hero-stat .num { font-family: var(--font-head); font-size: 28px; font-weight: 700; color: var(--accent); }
+.hero-stat .lbl { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+/* ─── SECTION ─── */
+section { padding: 80px 24px; max-width: 1100px; margin: 0 auto; }
+.section-label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); font-weight: 500; margin-bottom: 12px; }
+.section-title { font-family: var(--font-head); font-size: clamp(26px, 4vw, 40px); font-weight: 700; margin-bottom: 8px; }
+.section-sub { font-size: 15px; color: var(--muted); max-width: 500px; line-height: 1.6; margin-bottom: 40px; }
+
+/* ─── COURSES ─── */
+.courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.course-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 24px; transition: all 0.25s; position: relative; overflow: hidden;
+}
+.course-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  opacity: 0; transition: opacity 0.25s;
+}
+.course-card:hover { background: var(--card-hover); border-color: rgba(79,195,247,0.2); transform: translateY(-3px); }
+.course-card:hover::before { opacity: 1; }
+.course-icon { font-size: 32px; margin-bottom: 16px; }
+.course-level {
+  display: inline-block; font-size: 11px; padding: 4px 12px; border-radius: 100px;
+  font-weight: 500; margin-bottom: 12px; letter-spacing: 0.5px;
+}
+.level-beginner { background: rgba(0,229,160,0.12); color: var(--accent2); border: 1px solid rgba(0,229,160,0.25); }
+.level-intermediate { background: rgba(255,196,57,0.1); color: #ffc439; border: 1px solid rgba(255,196,57,0.2); }
+.level-advanced { background: rgba(255,99,99,0.1); color: #ff6363; border: 1px solid rgba(255,99,99,0.2); }
+.course-name { font-family: var(--font-head); font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+.course-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+.course-includes { margin-bottom: 20px; }
+.course-includes li { font-size: 12px; color: var(--muted); padding: 3px 0; list-style: none; }
+.course-includes li::before { content: '✓ '; color: var(--accent2); }
+.course-footer { display: flex; align-items: center; justify-content: space-between; }
+.course-price-block .price { font-family: var(--font-head); font-size: 24px; font-weight: 700; color: var(--accent); }
+.course-price-block .old { font-size: 13px; color: var(--muted); text-decoration: line-through; margin-left: 6px; }
+.course-price-block .save { font-size: 11px; color: var(--accent2); display: block; margin-top: 2px; }
+.enroll-btn { background: var(--accent); color: var(--dark); border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: var(--font-body); transition: all 0.2s; }
+.enroll-btn:hover { background: #29b6f6; transform: scale(1.03); }
+
+/* ─── HOW IT WORKS ─── */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+.step { text-align: center; padding: 32px 20px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; }
+.step-num { font-family: var(--font-head); font-size: 40px; font-weight: 700; color: rgba(79,195,247,0.2); margin-bottom: 12px; }
+.step-title { font-family: var(--font-head); font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.step-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ─── TESTIMONIALS ─── */
+.testimonials { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.tcard { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+.tcard-text { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+.tcard-author { display: flex; align-items: center; gap: 12px; }
+.tcard-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-weight: 700; font-size: 15px; color: var(--dark); }
+.tcard-name { font-weight: 500; font-size: 14px; }
+.tcard-role { font-size: 12px; color: var(--muted); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--dark2); border-top: 1px solid var(--border);
+  padding: 40px 40px 24px; text-align: center;
+}
+.footer-logo { font-family: var(--font-head); font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.footer-logo span { color: var(--accent); }
+.footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin: 16px 0; }
+.footer-links a { color: var(--muted); font-size: 14px; text-decoration: none; }
+.footer-links a:hover { color: var(--accent); }
+.footer-copy { font-size: 12px; color: var(--muted); margin-top: 16px; }
+
+/* ─── MODALS ─── */
+.overlay {
+  display: none; position: fixed; inset: 0; z-index: 2000;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+.overlay.open { display: flex; }
+.modal {
+  background: var(--dark2); border: 1px solid var(--border);
+  border-radius: 20px; padding: 36px; width: 100%; max-width: 440px;
+  position: relative; max-height: 90vh; overflow-y: auto;
+  animation: modalIn 0.25s ease;
+}
+@keyframes modalIn { from{opacity:0;transform:scale(0.95)translateY(10px)} to{opacity:1;transform:scale(1)translateY(0)} }
+.modal-close { position: absolute; top: 18px; right: 18px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--muted); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.modal-close:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+.modal-icon { font-size: 40px; margin-bottom: 16px; }
+.modal-title { font-family: var(--font-head); font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.modal-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; line-height: 1.5; }
+.form-row { margin-bottom: 16px; }
+.form-label { font-size: 12px; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; display: block; }
+.form-input {
+  width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 16px; color: var(--text); font-family: var(--font-body);
+  font-size: 14px; transition: border-color 0.2s;
+}
+.form-input:focus { outline: none; border-color: rgba(79,195,247,0.5); }
+.form-input::placeholder { color: rgba(240,240,248,0.25); }
+.form-btn { width: 100%; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; font-family: var(--font-body); margin-top: 8px; transition: all 0.2s; }
+.form-btn-blue { background: var(--accent); color: var(--dark); }
+.form-btn-blue:hover { background: #29b6f6; }
+.form-btn-green { background: var(--accent2); color: var(--dark); }
+.form-btn-green:hover { background: #00c98d; }
+.form-btn-wa { background: #25D366; color: #fff; }
+.form-btn-wa:hover { background: #20b659; }
+.form-switch { text-align: center; font-size: 13px; color: var(--muted); margin-top: 18px; }
+.form-switch a { color: var(--accent); cursor: pointer; }
+
+.pay-options { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
+.pay-opt { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 10px; padding: 14px 10px; text-align: center; cursor: pointer; transition: all 0.2s; }
+.pay-opt:hover, .pay-opt.active { border-color: var(--accent); background: rgba(79,195,247,0.08); }
+.pay-opt-icon { font-size: 22px; margin-bottom: 6px; }
+.pay-opt-name { font-size: 12px; color: var(--muted); }
+.order-summary { background: rgba(79,195,247,0.06); border: 1px solid rgba(79,195,247,0.15); border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; }
+.order-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+.order-row:not(:last-child) { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.order-row .label { color: var(--muted); }
+.order-row .val { font-weight: 500; color: var(--accent); font-family: var(--font-head); font-size: 18px; }
+
+.success-center { text-align: center; padding: 10px 0; }
+.success-big { font-size: 64px; margin-bottom: 16px; }
+.success-title { font-family: var(--font-head); font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+.success-msg { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
+
+/* ─── TOAST ─── */
+.toast { position: fixed; bottom: 30px; right: 30px; background: var(--dark2); border: 1px solid rgba(0,229,160,0.3); color: var(--text); padding: 14px 20px; border-radius: 12px; font-size: 14px; z-index: 3000; display: none; animation: toastIn 0.3s ease; }
+@keyframes toastIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+/* ─── MOBILE ─── */
+@media(max-width:600px){
+  nav { padding: 14px 20px; }
+  .nav-links .btn-ghost { display: none; }
+  section { padding: 60px 20px; }
+  .hero-stats { gap: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">The <span>Computer</span> School</a>
+  <div class="nav-links">
+    <button class="btn btn-ghost" onclick="openModal('login')">Login</button>
+    <button class="btn btn-accent" onclick="openModal('signup')">Sign Up Free</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🇮🇳 India's Affordable Computer Education</div>
+  <h1>
+    Master Computer Skills
+    <span class="line2">& Build Your Career</span>
+  </h1>
+  <p>Professional courses in programming, design & digital marketing. Learn at your own pace from anywhere in India.</p>
+  <div class="hero-btns">
+    <button class="btn btn-accent" onclick="scrollTo('courses')">Browse Courses ↓</button>
+    <button class="btn btn-ghost" onclick="openModal('fb-signup')">Join Free WhatsApp Group</button>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">500+</div><div class="lbl">Students</div></div>
+    <div class="hero-stat"><div class="num">8</div><div class="lbl">Courses</div></div>
+    <div class="hero-stat"><div class="num">4.9★</div><div class="lbl">Rating</div></div>
+    <div class="hero-stat"><div class="num">₹499</div><div class="lbl">Starting From</div></div>
+  </div>
+</div>
+
+<!-- COURSES -->
+<section id="courses">
+  <div class="section-label">Our Courses</div>
+  <div class="section-title">Choose Your Learning Path</div>
+  <div class="section-sub">All courses include lifetime access. Enroll once, learn forever. Certificates included.</div>
+  <div class="courses-grid" id="coursesGrid"></div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-label">Process</div>
+  <div class="section-title">How It Works</div>
+  <div class="section-sub">From signup to certificate in 4 simple steps.</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Create Account</div>
+      <div class="step-desc">Sign up with your name, email & WhatsApp number in under 1 minute.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Choose Course</div>
+      <div class="step-desc">Browse our courses and pick the one that fits your goals & budget.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Pay via UPI/Card</div>
+      <div class="step-desc">Pay securely via UPI, PhonePe, Paytm, or any debit/credit card.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Start Learning</div>
+      <div class="step-desc">Access your course instantly. Get certificate after completion.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="section-label">Reviews</div>
+  <div class="section-title">What Our Students Say</div>
+  <div class="testimonials">
+    <div class="tcard">
+      <div class="tcard-text">"I learned Python in just 3 weeks. The course is very easy to understand and the price is very affordable. Got a job at a local company!"</div>
+      <div class="tcard-author"><div class="tcard-avatar">RK</div><div><div class="tcard-name">Rahul Kumar</div><div class="tcard-role">Python Student, Kolkata</div></div></div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-text">"The web development course is amazing. I built my first website within a month. WhatsApp group support is very helpful."</div>
+      <div class="tcard-author"><div class="tcard-avatar">PS</div><div><div class="tcard-name">Priya Sharma</div><div class="tcard-role">Web Dev Student, Murshidabad</div></div></div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-text">"MS Office course helped me get a data entry job. Very practical and easy to follow. Highly recommended for beginners!"</div>
+      <div class="tcard-author"><div class="tcard-avatar">AM</div><div><div class="tcard-name">Arjun Mondal</div><div class="tcard-role">MS Office Student, Jangipur</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">The <span>Computer</span> School</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Professional computer education for every Indian</div>
+  <div class="footer-links">
+    <a href="#courses">Courses</a>
+    <a href="#how">How It Works</a>
+    <a onclick="openModal('fb-signup')" style="cursor:pointer;">WhatsApp Group</a>
+    <a onclick="openModal('login')" style="cursor:pointer;">Login</a>
+  </div>
+  <div class="footer-copy">© 2025 The Computer School. All rights reserved. | Made with ❤️ in India</div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════ MODALS ══════════════ -->
+
+<!-- LOGIN -->
+<div class="overlay" id="modal-login" onclick="bgClose(event,'login')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('login')">✕</button>
+    <div class="modal-icon">👤</div>
+    <div class="modal-title">Welcome Back</div>
+    <div class="modal-sub">Login to access your courses and track your progress.</div>
+    <div class="form-row"><label class="form-label">Email</label><input class="form-input" type="email" id="login-email" placeholder="you@gmail.com"></div>
+    <div class="form-row"><label class="form-label">Password</label><input class="form-input" type="password" id="login-pass" placeholder="Your password"></div>
+    <button class="form-btn form-btn-blue" onclick="doLogin()">Login to My Account</button>
+    <div class="form-switch">Don't have an account? <a onclick="switchModal('login','signup')">Sign up free</a></div>
+  </div>
+</div>
+
+<!-- SIGNUP -->
+<div class="overlay" id="modal-signup" onclick="bgClose(event,'signup')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('signup')">✕</button>
+    <div class="modal-icon">🎓</div>
+    <div class="modal-title">Create Account</div>
+    <div class="modal-sub">Join 500+ students. Sign up in 30 seconds and get WhatsApp group access.</div>
+    <div class="form-row"><label class="form-label">Full Name</label><input class="form-input" type="text" id="su-name" placeholder="Your full name"></div>
+    <div class="form-row"><label class="form-label">Email Address</label><input class="form-input" type="email" id="su-email" placeholder="you@gmail.com"></div>
+    <div class="form-row"><label class="form-label">WhatsApp Number</label><input class="form-input" type="tel" id="su-wa" placeholder="+91 98765 43210"></div>
+    <div class="form-row"><label class="form-label">Create Password</label><input class="form-input" type="password" id="su-pass" placeholder="Min 8 characters"></div>
+    <button class="form-btn form-btn-green" onclick="doSignup()">Create Account & Join WhatsApp Group →</button>
+    <div class="form-switch">Already have an account? <a onclick="switchModal('signup','login')">Login</a></div>
+  </div>
+</div>
+
+<!-- FACEBOOK / WHATSAPP SIGNUP -->
+<div class="overlay" id="modal-fb-signup" onclick="bgClose(event,'fb-signup')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('fb-signup')">✕</button>
+    <div class="modal-icon">📱</div>
+    <div class="modal-title">Join Our Free WhatsApp Group</div>
+    <div class="modal-sub">Get free computer tips, course updates & special offers directly on WhatsApp. 100% Free!</div>
+    <div class="form-row"><label class="form-label">Your Name</label><input class="form-input" type="text" id="fb-name" placeholder="Your name"></div>
+    <div class="form-row"><label class="form-label">Email</label><input class="form-input" type="email" id="fb-email" placeholder="you@gmail.com"></div>
+    <div class="form-row"><label class="form-label">WhatsApp Number</label><input class="form-input" type="tel" id="fb-wa" placeholder="+91 98765 43210"></div>
+    <button class="form-btn form-btn-wa" onclick="doFbSignup()">📲 Join WhatsApp Group Now — Free!</button>
+    <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:12px;">No spam. Only valuable content. Leave anytime.</div>
+  </div>
+</div>
+
+<!-- PAYMENT -->
+<div class="overlay" id="modal-payment" onclick="bgClose(event,'payment')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('payment')">✕</button>
+    <div class="modal-icon">💳</div>
+    <div class="modal-title">Complete Your Purchase</div>
+    <div class="modal-sub" id="pay-course-sub">Enrolling in the course</div>
+    <div class="order-summary">
+      <div class="order-row"><span class="label">Course</span><span id="pay-course-name" style="font-size:14px;font-weight:500;">—</span></div>
+      <div class="order-row"><span class="label">Amount</span><span class="val" id="pay-amount">₹—</span></div>
+    </div>
+    <div style="font-size:12px;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:12px;">Select Payment Method</div>
+    <div class="pay-options">
+      <div class="pay-opt active" onclick="selectPay(this)"><div class="pay-opt-icon">📲</div><div class="pay-opt-name">UPI</div></div>
+      <div class="pay-opt" onclick="selectPay(this)"><div class="pay-opt-icon">💜</div><div class="pay-opt-name">PhonePe</div></div>
+      <div class="pay-opt" onclick="selectPay(this)"><div class="pay-opt-icon">🟢</div><div class="pay-opt-name">Paytm</div></div>
+      <div class="pay-opt" onclick="selectPay(this)"><div class="pay-opt-icon">🔵</div><div class="pay-opt-name">GPay</div></div>
+      <div class="pay-opt" onclick="selectPay(this)"><div class="pay-opt-icon">💳</div><div class="pay-opt-name">Card</div></div>
+      <div class="pay-opt" onclick="selectPay(this)"><div class="pay-opt-icon">🏦</div><div class="pay-opt-name">Netbanking</div></div>
+    </div>
+    <div class="form-row"><label class="form-label">UPI ID / Phone Number</label><input class="form-input" placeholder="yourname@upi or 98765XXXXX"></div>
+    <button class="form-btn form-btn-green" onclick="doPayment()">Pay Now — Secure Payment ✓</button>
+    <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:12px;">🔒 Powered by Razorpay · Payment credited directly to owner's bank account</div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="overlay" id="modal-success" onclick="bgClose(event,'success')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('success')">✕</button>
+    <div class="success-center">
+      <div class="success-big">🎉</div>
+      <div class="success-title">Payment Successful!</div>
+      <div class="success-msg">Your course has been unlocked! You'll receive course access details on your WhatsApp and email within a few minutes.</div>
+      <button class="form-btn form-btn-wa" onclick="joinWA()" style="max-width:300px;margin:0 auto;">📲 Join Course WhatsApp Group</button>
+      <div style="margin-top:14px;font-size:13px;color:var(--muted);cursor:pointer;" onclick="closeModal('success')">Go to Dashboard →</div>
+    </div>
+  </div>
+</div>
+
+<!-- WELCOME after signup -->
+<div class="overlay" id="modal-welcome" onclick="bgClose(event,'welcome')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('welcome')">✕</button>
+    <div class="success-center">
+      <div class="success-big">✅</div>
+      <div class="success-title">Account Created!</div>
+      <div class="success-msg">Welcome to The Computer School! Click below to join our WhatsApp group and get free tips, updates and exclusive offers.</div>
+      <button class="form-btn form-btn-wa" onclick="joinWA()" style="max-width:300px;margin:0 auto;">📲 Join WhatsApp Group — Free!</button>
+      <div style="margin-top:14px;font-size:13px;color:var(--muted);cursor:pointer;" onclick="closeModal('welcome')">Skip for now</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── COURSES DATA (edit prices/courses here anytime) ──
+const COURSES = [
+  {
+    icon: "🐍", name: "Python Programming",
+    level: "Beginner", levelClass: "level-beginner",
+    desc: "Learn Python from zero. Variables, loops, functions, file handling & real projects.",
+    includes: ["40+ video lessons", "Practical assignments", "Certificate", "WhatsApp support"],
+    price: 999, oldPrice: 1999
+  },
+  {
+    icon: "🌐", name: "Web Development",
+    level: "Intermediate", levelClass: "level-intermediate",
+    desc: "HTML, CSS, JavaScript & React. Build real, professional websites from scratch.",
+    includes: ["60+ lessons", "5 real projects", "Certificate", "Job support"],
+    price: 1499, oldPrice: 2999
+  },
+  {
+    icon: "📊", name: "MS Office Complete",
+    level: "Beginner", levelClass: "level-beginner",
+    desc: "Master Word, Excel, PowerPoint. Essential for any office job or business.",
+    includes: ["Word, Excel, PPT", "Practical exercises", "Certificate", "Lifetime access"],
+    price: 499, oldPrice: 1299
+  },
+  {
+    icon: "🎨", name: "Graphic Design",
+    level: "Intermediate", levelClass: "level-intermediate",
+    desc: "Canva, Photoshop basics & design principles. Create stunning graphics for business.",
+    includes: ["Design theory", "30+ design projects", "Certificate", "Portfolio review"],
+    price: 1199, oldPrice: 2499
+  },
+  {
+    icon: "📈", name: "Digital Marketing",
+    level: "Intermediate", levelClass: "level-intermediate",
+    desc: "SEO, Social Media, Google Ads & Facebook Ads. Grow any business online.",
+    includes: ["Google & Meta Ads", "SEO & analytics", "Certificate", "Live campaign practice"],
+    price: 1299, oldPrice: 2499
+  },
+  {
+    icon: "🤖", name: "Data Science",
+    level: "Advanced", levelClass: "level-advanced",
+    desc: "Python, Pandas, NumPy, Machine Learning & Data Visualization. Industry-ready skills.",
+    includes: ["80+ lessons", "Real datasets", "Certificate", "Placement support"],
+    price: 2499, oldPrice: 4999
+  },
+  {
+    icon: "💻", name: "Computer Basics",
+    level: "Beginner", levelClass: "level-beginner",
+    desc: "Complete beginner course. Learn typing, internet, email, file management & more.",
+    includes: ["Typing practice", "Internet & email", "Certificate", "Certificate"],
+    price: 299, oldPrice: 799
+  },
+  {
+    icon: "📱", name: "Tally + Accounting",
+    level: "Intermediate", levelClass: "level-intermediate",
+    desc: "Tally ERP 9 & Prime, GST, payroll & accounts. Essential for any accounting job.",
+    includes: ["Tally Prime", "GST filing", "Certificate", "Job support"],
+    price: 1099, oldPrice: 2199
+  }
+];
+
+// ── WHATSAPP GROUP LINK (change this to your real group link) ──
+const WA_GROUP_LINK = "https://chat.whatsapp.com/YOUR_GROUP_LINK_HERE";
+
+// ── RENDER COURSES ──
+function renderCourses() {
+  const grid = document.getElementById('coursesGrid');
+  grid.innerHTML = COURSES.map((c, i) => {
+    const save = Math.round((1 - c.price / c.oldPrice) * 100);
+    return `
+    <div class="course-card">
+      <div class="course-icon">${c.icon}</div>
+      <span class="course-level ${c.levelClass}">${c.level}</span>
+      <div class="course-name">${c.name}</div>
+      <div class="course-desc">${c.desc}</div>
+      <ul class="course-includes">${c.includes.map(x=>`<li>${x}</li>`).join('')}</ul>
+      <div class="course-footer">
+        <div class="course-price-block">
+          <span class="price">₹${c.price.toLocaleString('en-IN')}</span>
+          <span class="old">₹${c.oldPrice.toLocaleString('en-IN')}</span>
+          <span class="save">${save}% OFF today!</span>
+        </div>
+        <button class="enroll-btn" onclick="enrollCourse(${i})">Enroll Now</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── MODAL CONTROLS ──
+function openModal(id) { document.getElementById('modal-' + id).classList.add('open'); }
+function closeModal(id) { document.getElementById('modal-' + id).classList.remove('open'); }
+function switchModal(a, b) { closeModal(a); openModal(b); }
+function bgClose(e, id) { if (e.target === document.getElementById('modal-' + id)) closeModal(id); }
+
+// ── ENROLL ──
+function enrollCourse(i) {
+  const c = COURSES[i];
+  document.getElementById('pay-course-sub').textContent = 'Enrolling in: ' + c.name;
+  document.getElementById('pay-course-name').textContent = c.name;
+  document.getElementById('pay-amount').textContent = '₹' + c.price.toLocaleString('en-IN');
+  openModal('payment');
+}
+
+// ── PAYMENT METHOD SELECT ──
+function selectPay(el) {
+  document.querySelectorAll('.pay-opt').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── ACTIONS ──
+function doLogin() {
+  showToast('✅ Logged in successfully!');
+  closeModal('login');
+}
+
+function doSignup() {
+  const name = document.getElementById('su-name').value.trim();
+  const email = document.getElementById('su-email').value.trim();
+  const wa = document.getElementById('su-wa').value.trim();
+  if (!name || !email || !wa) { showToast('⚠️ Please fill all fields'); return; }
+  closeModal('signup');
+  openModal('welcome');
+}
+
+function doFbSignup() {
+  const name = document.getElementById('fb-name').value.trim();
+  const wa = document.getElementById('fb-wa').value.trim();
+  if (!name || !wa) { showToast('⚠️ Please fill your name & WhatsApp number'); return; }
+  closeModal('fb-signup');
+  // Redirect to WhatsApp group
+  window.open(WA_GROUP_LINK, '_blank');
+  showToast('✅ Redirecting to WhatsApp group!');
+}
+
+function doPayment() {
+  closeModal('payment');
+  openModal('success');
+}
+
+function joinWA() {
+  window.open(WA_GROUP_LINK, '_blank');
+  closeModal('welcome');
+  closeModal('success');
+  showToast('✅ Opening WhatsApp group...');
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 3000);
+}
+
+// ── SCROLL ──
+function scrollTo(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
+
+// ── INIT ──
+renderCourses();
+</script>
+</body>
+</html>
