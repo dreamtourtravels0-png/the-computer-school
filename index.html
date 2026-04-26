@@ -460,11 +460,11 @@ const COURSES = [
     price: 1499, oldPrice: 2999
   },
   {
-    icon: "📊", name: "MS Office Complete",
+    icon: "📊", name: "Basic to Advance Course in MS-Excel",
     level: "Beginner", levelClass: "level-beginner",
-    desc: "Master Word, Excel, PowerPoint. Essential for any office job or business.",
-    includes: ["Word, Excel, PPT", "Practical exercises", "Certificate", "Lifetime access"],
-    price: 499, oldPrice: 1299
+    desc: "20টি Class সহ Basic থেকে Advanced MS Excel। Vlookup, Pivot Table, Charts, Formula সব কিছু।",
+    includes: ["20টি Class", "Certificate", "Lifetime Access", "WhatsApp Support"],
+    price: 1499, oldPrice: 2999, payLink: "https://rzp.io/rzp/oitLCSSK"
   },
   {
     icon: "🎨", name: "Graphic Design",
@@ -493,6 +493,13 @@ const COURSES = [
     desc: "Complete beginner course. Learn typing, internet, email, file management & more.",
     includes: ["Typing practice", "Internet & email", "Certificate", "Certificate"],
     price: 299, oldPrice: 799
+  },
+  {
+    icon: "📈", name: "Vlookup Full Tutorial",
+    level: "Beginner", levelClass: "level-beginner",
+    desc: "20 Part সম্পূর্ণ Vlookup Tutorial। Beginner থেকে Advanced — Real Examples সহ।",
+    includes: ["20টি Part", "Real Examples", "Certificate", "Lifetime Access"],
+    price: 199, oldPrice: 999, payLink: "https://rzp.io/rzp/gqKSuIqo"
   },
   {
     icon: "📱", name: "Tally + Accounting",
@@ -544,13 +551,19 @@ function bgClose(e, id) { if (e.target === document.getElementById('modal-' + id
 
 // ── ENROLL ──
 function enrollCourse(i) {
+  const c = COURSES[i];
+  if (c.soldOut) { showToast('❌ এই course টি Sold Out'); return; }
+  // If Razorpay link exists, open directly
+  if (c.payLink) {
+    window.open(c.payLink, '_blank');
+    return;
+  }
+  // Otherwise open internal payment modal
   if (!currentUser) {
     showToast('⚠️ Course কিনতে আগে Login করুন');
     openModal('login');
     return;
   }
-  const c = COURSES[i];
-  if (c.soldOut) { showToast('❌ এই course টি Sold Out'); return; }
   document.getElementById('pay-course-sub').textContent = 'Enrolling in: ' + c.name;
   document.getElementById('pay-course-name').textContent = c.name;
   document.getElementById('pay-amount').textContent = '₹' + c.price.toLocaleString('en-IN');
