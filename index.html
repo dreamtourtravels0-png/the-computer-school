@@ -83,15 +83,33 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .btn-o:hover{border-color:var(--accent);color:var(--accent);}
 .btn-lg{padding:14px 32px;font-size:16px;}
 
-/* FREE CLASS FORM */
-.free-form{background:linear-gradient(135deg,rgba(79,195,247,.07),rgba(0,229,160,.05));border:1px solid rgba(79,195,247,.2);border-radius:20px;padding:32px;margin-top:32px;}
-.free-form h2{font-family:var(--fh);font-size:22px;font-weight:700;margin-bottom:6px;}
-.free-form p{font-size:13px;color:var(--muted);margin-bottom:20px;}
-.fgrid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end;}
-.fg label{font-size:11px;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
-.fi{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:var(--fb);font-size:14px;}
-.fi:focus{outline:none;border-color:rgba(79,195,247,.5);}
-.fi::placeholder{color:rgba(240,240,248,.25);}
+<!-- FREE CLASS FORM -->
+<div class="free-form">
+  <h2>🎓 ফ্রি ক্লাসে রেজিস্ট্রেশন করুন</h2>
+  <p>নিচের ফর্মটি পূরণ করুন — সীমিত আসন বাকি!</p>
+
+  <div class="fgrid">
+    <div class="fg">
+      <label>আপনার নাম</label>
+      <input class="fi" type="text" id="reg-name" placeholder="নাম লিখুন" required>
+    </div>
+    <div class="fg">
+      <label>WhatsApp নম্বর</label>
+      <input class="fi" type="tel" id="reg-phone" placeholder="01XXXXXXXXX" required>
+    </div>
+    <div class="fg">
+      <label>ইমেইল</label>
+      <input class="fi" type="email" id="reg-email" placeholder="email@example.com" required>
+    </div>
+    <div class="fg">
+      <button class="btn-register" id="reg-btn" onclick="submitForm()">
+        রেজিস্ট্রেশন করুন 🚀
+      </button>
+    </div>
+  </div>
+
+  <div id="reg-msg" style="margin-top:14px;font-size:13px;display:none;"></div>
+</div>
 
 /* POSTER CARD */
 .poster-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;margin-top:32px;}
